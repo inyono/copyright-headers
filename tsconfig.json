@@ -12,10 +12,11 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
+    "outDir": "dist",
     "strictFunctionTypes": true,
     "strictPropertyInitialization": true,
     "strictNullChecks": true,
     "target": "es6"
   },
-  "include": ["src", "scripts"]
+  "include": ["src"]
 }

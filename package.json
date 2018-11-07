@@ -7,8 +7,11 @@
   },
   "license": "MIT",
   "author": "Splish UG (haftungsbeschränkt)",
+  "main": "dist/index.js",
   "repository": "github:splish-me/copyright-headers",
   "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "tsc",
     "format": "npm-run-all format:*",
     "lint": "npm-run-all lint:*",
     "license": "ts-node scripts/license-headers",
@@ -27,6 +30,7 @@
     "glob": "^7.0.0",
     "npm-run-all": "^4.0.0",
     "prettier": "^1.0.0",
+    "rimraf": "^2.6.2",
     "ts-node": "^7.0.0",
     "typescript": "^3.0.0"
   }
