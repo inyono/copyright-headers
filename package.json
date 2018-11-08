@@ -7,6 +7,10 @@
   },
   "license": "MIT",
   "author": "Splish UG (haftungsbeschränkt)",
+  "files": [
+    "dist",
+    "src"
+  ],
   "main": "dist/index.js",
   "repository": "github:splish-me/copyright-headers",
   "scripts": {
