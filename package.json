@@ -1,5 +1,5 @@
 {
-  "name": "@serlo-org/copyright-headers",
+  "name": "@splish-me/copyright-headers",
   "version": "0.0.0",
   "homepage": "https://github.com/splish-me/copyright-headers",
   "bugs": {
@@ -37,5 +37,8 @@
     "rimraf": "^2.6.2",
     "ts-node": "^7.0.0",
     "typescript": "^3.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
