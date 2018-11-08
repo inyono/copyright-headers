@@ -12,8 +12,6 @@ import * as util from 'util'
 const readFile = util.promisify(fs.readFile)
 const writeFile = util.promisify(fs.writeFile)
 
-const options = { encoding: 'utf-8' }
-
 interface SourceLanguage {
   match: RegExp
   before?: string
@@ -31,30 +29,30 @@ const cStyleComments: Pick<SourceLanguage, 'begin' | 'buildLine' | 'end'> = {
   end: ' */'
 }
 
-const js: SourceLanguage = {
+export const js: SourceLanguage = {
   match: /.jsx?$/,
   ...cStyleComments
 }
 
-const ts: SourceLanguage = {
+export const ts: SourceLanguage = {
   ...js,
   match: /.tsx?$/
 }
 
-const php: SourceLanguage = {
+export const php: SourceLanguage = {
   match: /(\.php|\.php\.dist)$/,
   before: '<?php\n',
   ...cStyleComments
 }
 
-const phtml: SourceLanguage = {
+export const phtml: SourceLanguage = {
   match: /\.phtml$/,
   before: '<?php\n',
   after: '\n?>',
   ...cStyleComments
 }
 
-const twig: SourceLanguage = {
+export const twig: SourceLanguage = {
   match: /\.twig$/,
   begin: '{##',
   buildLine: line => {
@@ -63,60 +61,102 @@ const twig: SourceLanguage = {
   end: ' #}'
 }
 
+export interface CopyrightHeaderOptions {
+  lines: string[]
+  shouldUpdate?: (header: string) => Boolean
+}
+
 export async function updateLicenseHeader({
   filePath,
-  lines,
-  shouldUpdate = () => false
+  ...options
 }: {
   filePath: string
-  lines: string[]
-  shouldUpdate?: (content: string) => boolean
-}) {
+} & CopyrightHeaderOptions) {
+  signale.warn('Deprecated, use updateCopyrightHeader instead')
+  await updateCopyrightHeader(filePath, options)
+}
+
+export async function updateCopyrightHeader(
+  filePath: string,
+  options: CopyrightHeaderOptions
+): Promise<void> {
   const language = getSourceLanguage(filePath)
 
   if (!language) {
-    console.log('[ERR] Unrecognized source language:', filePath)
-    return Promise.resolve()
+    signale.fatal('Could not detect source language of', filePath)
+    return
   }
 
-  const header = getLicenseHeader(language, lines)
-  const re = getLicenseHeaderRegExp(language)
+  const ioOptions = { encoding: 'utf-8' }
+  const oldContent = await readFile(filePath, ioOptions)
 
-  return readFile(filePath, options).then(content => {
-    const match = content.match(re)
+  const [status, newContent] = getUpdatedCopyrightHeader(
+    oldContent,
+    language,
+    options
+  )
 
-    if (!match) {
+  switch (status) {
+    case CopyrightHeaderStatus.Added:
       signale.success('Added new license header to', filePath)
-      // No license header present, add license header to the beginning
-      return writeFile(
-        filePath,
-        `${header}\n${
-          language.before && content.startsWith(language.before)
-            ? content.substring(language.before.length)
-            : content
-        }`,
-        options
-      )
-    }
-
-    if (match[0] === header) {
-      // Nothing to do here
-      return Promise.resolve()
-    }
-
-    if (shouldUpdate(match[0])) {
+      await writeFile(filePath, newContent, ioOptions)
+      break
+    case CopyrightHeaderStatus.Changed:
       signale.success('Updated license header of', filePath)
-      // License header present that should be overriden
-      return writeFile(filePath, content.replace(re, header), options)
+      await writeFile(filePath, newContent, ioOptions)
+      break
+    case CopyrightHeaderStatus.External:
+      signale.info(
+        'Did not update existing (and possibly external) license header of',
+        filePath
+      )
+      break
+  }
+}
+
+export function getUpdatedCopyrightHeader(
+  content: string,
+  language: SourceLanguage,
+  options: CopyrightHeaderOptions
+): [CopyrightHeaderStatus, string] {
+  const header = getLicenseHeader(language, options.lines)
+  const re = getLicenseHeaderRegExp(language)
+  const match = content.match(re)
+
+  if (!match) {
+    let newHeader = header
+    let newContent = content
+
+    if (language.before && newContent.startsWith(language.before)) {
+      newContent = content.substring(language.before.length)
+    } else {
+      if (language.after) {
+        newHeader += `${language.after}`
+      }
     }
 
-    signale.info(
-      'Did not update existing (and possibly external) license header of',
-      filePath
-    )
+    return [CopyrightHeaderStatus.Added, `${newHeader}\n${newContent}`]
+  }
 
-    return Promise.resolve()
-  })
+  if (match[0] === header) {
+    return [CopyrightHeaderStatus.Unchanged, '']
+  }
+
+  if (
+    typeof options.shouldUpdate === 'function' &&
+    options.shouldUpdate(match[0])
+  ) {
+    return [CopyrightHeaderStatus.Changed, content.replace(re, header)]
+  }
+
+  return [CopyrightHeaderStatus.External, content]
+}
+
+export enum CopyrightHeaderStatus {
+  Added,
+  Changed,
+  Unchanged,
+  External
 }
 
 function getSourceLanguage(filePath: string) {
@@ -130,8 +170,7 @@ function getLicenseHeader(language: SourceLanguage, lines: string[]) {
     (language.before || '') +
     `${language.begin}\n` +
     lines.map(language.buildLine).join('\n') +
-    `\n${language.end}` +
-    (language.after || '')
+    `\n${language.end}`
   )
 }
 
@@ -141,6 +180,6 @@ function getLicenseHeaderRegExp(language: SourceLanguage) {
   return new RegExp(
     `${forRe(language.before || '')}${forRe(language.begin)}\n(.+\n)*${forRe(
       language.end
-    )}${forRe(language.after || '')}`
+    )}`
   )
 }
