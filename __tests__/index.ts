@@ -46,6 +46,27 @@ echo "foo bar";
 `)
   })
 
+  test('does start with <?php (w/ unnecessary whitespace after opening tag)', () => {
+    const input = `<?php
+
+
+echo "foo bar";
+`
+    const [status, output] = getUpdatedCopyrightHeader(input, php, options)
+
+    expect(status).toEqual(CopyrightHeaderStatus.Added)
+    expect(output).toEqual(`<?php
+/**
+ * This file is part of @splish-me/copyright-headers
+ *
+ * Copyright (c) 2018 Splish UG (haftungsbeschränkt)
+ */
+
+
+echo "foo bar";
+`)
+  })
+
   test('existing copyright header', () => {
     const input = `<?php
 /**
