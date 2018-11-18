@@ -9,7 +9,7 @@ import * as glob from 'glob'
 import * as path from 'path'
 import * as util from 'util'
 
-import { updateLicenseHeader } from '../src'
+import { updateCopyrightHeader } from '../src'
 
 const g = util.promisify(glob)
 
@@ -29,8 +29,7 @@ g('@(scripts|src)/*.ts', {
   return files.map(file => {
     const filePath = path.join(root, file)
 
-    return updateLicenseHeader({
-      filePath,
+    return updateCopyrightHeader(filePath, {
       lines,
       shouldUpdate: content => {
         return content.includes('Splish UG')
