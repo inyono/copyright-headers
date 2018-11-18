@@ -15,7 +15,7 @@ describe('php', () => {
     ]
   }
 
-  test('does not start with <?php', () => {
+  it('does not start with <?php', () => {
     const input = ``
     const [status, output] = getUpdatedCopyrightHeader(input, php, options)
 
@@ -29,7 +29,7 @@ describe('php', () => {
 `)
   })
 
-  test('does start with <?php', () => {
+  it('does start with <?php', () => {
     const input = `<?php
 echo "foo bar";
 `
@@ -46,7 +46,7 @@ echo "foo bar";
 `)
   })
 
-  test('existing copyright header', () => {
+  it('existing copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Splish UG (haftungsbeschränkt)
@@ -69,7 +69,7 @@ echo "foo bar";
 `)
   })
 
-  test('existing external copyright header', () => {
+  it('existing external copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Max Mustermann Corporation
@@ -85,7 +85,7 @@ echo "foo bar";
     expect(output).toEqual(input)
   })
 
-  test('multiple copyright headers', () => {
+  it('multiple copyright headers', () => {
     const input = `<?php
 /**
  * This file is part of @splish-me/copyright-headers
@@ -128,7 +128,7 @@ describe('phtml', () => {
     ]
   }
 
-  test('does not start with <?php', () => {
+  it('does not start with <?php', () => {
     const input = ``
     const [status, output] = getUpdatedCopyrightHeader(input, phtml, options)
 
@@ -143,7 +143,7 @@ describe('phtml', () => {
 `)
   })
 
-  test('does start with <?php', () => {
+  it('does start with <?php', () => {
     const input = `<?php
 echo "foo bar";
 ?>
@@ -162,7 +162,7 @@ echo "foo bar";
 `)
   })
 
-  test('existing copyright header', () => {
+  it('existing copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Splish UG (haftungsbeschränkt)
@@ -187,7 +187,7 @@ echo "foo bar";
 `)
   })
 
-  test('existing external copyright header', () => {
+  it('existing external copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Max Mustermann Corporation
@@ -204,7 +204,7 @@ echo "foo bar";
     expect(output).toEqual(input)
   })
 
-  test('multiple copyright headers', () => {
+  it('multiple copyright headers', () => {
     const input = `<?php
 /**
  * This file is part of @splish-me/copyright-headers
