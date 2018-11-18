@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file. The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Fixed
+
+- Handle multiple multiline comments without newline in between correctly
+
 ## [0.0.1] - 2018-11-08
 
 ### Added

@@ -6,6 +6,7 @@
  * @link      https://github.com/splish-me/copyright-headers for the canonical source repository
  */
 import * as fs from 'fs'
+import * as R from 'ramda'
 import * as signale from 'signale'
 import * as util from 'util'
 
@@ -120,33 +121,42 @@ export function getUpdatedCopyrightHeader(
   options: CopyrightHeaderOptions
 ): [CopyrightHeaderStatus, string] {
   const header = getLicenseHeader(language, options.lines)
-  const re = getLicenseHeaderRegExp(language)
-  const match = content.match(re)
+  const existingCopyrightHeader = getFirstCopyrightHeader(content, language)
 
-  if (!match) {
+  if (!existingCopyrightHeader) {
     let newHeader = header
     let newContent = content
 
-    if (language.before && newContent.startsWith(language.before)) {
-      newContent = content.substring(language.before.length)
-    } else {
-      if (language.after) {
-        newHeader += `${language.after}`
+    const contentStartsWithOpeningTag =
+      language.before && content.startsWith(language.before)
+
+    if (language.before) {
+      newHeader = language.before + newHeader
+
+      if (contentStartsWithOpeningTag) {
+        newContent = content.substring(language.before.length)
       }
+    }
+
+    if (language.after && !contentStartsWithOpeningTag) {
+      newHeader += language.after
     }
 
     return [CopyrightHeaderStatus.Added, `${newHeader}\n${newContent}`]
   }
 
-  if (match[0] === header) {
+  if (existingCopyrightHeader === header) {
     return [CopyrightHeaderStatus.Unchanged, '']
   }
 
   if (
     typeof options.shouldUpdate === 'function' &&
-    options.shouldUpdate(match[0])
+    options.shouldUpdate(existingCopyrightHeader)
   ) {
-    return [CopyrightHeaderStatus.Changed, content.replace(re, header)]
+    return [
+      CopyrightHeaderStatus.Changed,
+      content.replace(existingCopyrightHeader, header)
+    ]
   }
 
   return [CopyrightHeaderStatus.External, content]
@@ -167,19 +177,20 @@ function getSourceLanguage(filePath: string) {
 
 function getLicenseHeader(language: SourceLanguage, lines: string[]) {
   return (
-    (language.before || '') +
     `${language.begin}\n` +
     lines.map(language.buildLine).join('\n') +
     `\n${language.end}`
   )
 }
 
-function getLicenseHeaderRegExp(language: SourceLanguage) {
-  const forRe = (s: string) => s.replace(/(\?|\/|\*)/g, match => `\\${match}`)
+function getFirstCopyrightHeader(content: string, language: SourceLanguage) {
+  const after = R.tail(R.split(language.begin, content))
 
-  return new RegExp(
-    `${forRe(language.before || '')}${forRe(language.begin)}\n(.+\n)*${forRe(
-      language.end
-    )}`
-  )
+  if (R.isEmpty(after)) {
+    return ''
+  }
+
+  const [comment] = R.split(language.end, after.join(''))
+
+  return `${language.begin}${comment}${language.end}`
 }

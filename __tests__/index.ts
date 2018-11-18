@@ -15,7 +15,7 @@ describe('php', () => {
     ]
   }
 
-  it('does not start with <?php', () => {
+  test('does not start with <?php', () => {
     const input = ``
     const [status, output] = getUpdatedCopyrightHeader(input, php, options)
 
@@ -29,7 +29,7 @@ describe('php', () => {
 `)
   })
 
-  it('does start with <?php', () => {
+  test('does start with <?php', () => {
     const input = `<?php
 echo "foo bar";
 `
@@ -46,7 +46,7 @@ echo "foo bar";
 `)
   })
 
-  it('existing copyright header', () => {
+  test('existing copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Splish UG (haftungsbeschränkt)
@@ -69,7 +69,7 @@ echo "foo bar";
 `)
   })
 
-  it('existing external copyright header', () => {
+  test('existing external copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Max Mustermann Corporation
@@ -85,7 +85,7 @@ echo "foo bar";
     expect(output).toEqual(input)
   })
 
-  it('multiple copyright headers', () => {
+  test('multiple copyright headers', () => {
     const input = `<?php
 /**
  * This file is part of @splish-me/copyright-headers
@@ -111,6 +111,37 @@ echo "foo bar";
  * Copyright (c) 2018 Splish UG (haftungsbeschränkt)
  */
 
+/**
+ * Copyright (c) 2016 Max Mustermann Corporation
+ */
+echo "foo bar";
+`)
+  })
+
+  test('multiple copyright headers (w/o newlines in between)', () => {
+    const input = `<?php
+/**
+ * This file is part of @splish-me/copyright-headers
+ *
+ * Copyright (c) 2016 Splish UG (haftungsbeschränkt)
+ */
+/**
+ * Copyright (c) 2016 Max Mustermann Corporation
+ */
+echo "foo bar";
+`
+    const [status, output] = getUpdatedCopyrightHeader(input, php, {
+      ...options,
+      shouldUpdate: () => true
+    })
+
+    expect(status).toEqual(CopyrightHeaderStatus.Changed)
+    expect(output).toEqual(`<?php
+/**
+ * This file is part of @splish-me/copyright-headers
+ *
+ * Copyright (c) 2018 Splish UG (haftungsbeschränkt)
+ */
 /**
  * Copyright (c) 2016 Max Mustermann Corporation
  */
@@ -128,7 +159,7 @@ describe('phtml', () => {
     ]
   }
 
-  it('does not start with <?php', () => {
+  test('does not start with <?php', () => {
     const input = ``
     const [status, output] = getUpdatedCopyrightHeader(input, phtml, options)
 
@@ -143,7 +174,7 @@ describe('phtml', () => {
 `)
   })
 
-  it('does start with <?php', () => {
+  test('does start with <?php', () => {
     const input = `<?php
 echo "foo bar";
 ?>
@@ -162,7 +193,7 @@ echo "foo bar";
 `)
   })
 
-  it('existing copyright header', () => {
+  test('existing copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Splish UG (haftungsbeschränkt)
@@ -187,7 +218,7 @@ echo "foo bar";
 `)
   })
 
-  it('existing external copyright header', () => {
+  test('existing external copyright header', () => {
     const input = `<?php
 /**
  * Copyright (c) 2016 Max Mustermann Corporation
@@ -204,7 +235,7 @@ echo "foo bar";
     expect(output).toEqual(input)
   })
 
-  it('multiple copyright headers', () => {
+  test('multiple copyright headers', () => {
     const input = `<?php
 /**
  * This file is part of @splish-me/copyright-headers
@@ -231,6 +262,39 @@ echo "foo bar";
  * Copyright (c) 2018 Splish UG (haftungsbeschränkt)
  */
 
+/**
+ * Copyright (c) 2016 Max Mustermann Corporation
+ */
+echo "foo bar";
+?>
+`)
+  })
+
+  test('multiple copyright headers (w/o newlines in between)', () => {
+    const input = `<?php
+/**
+ * This file is part of @splish-me/copyright-headers
+ *
+ * Copyright (c) 2016 Splish UG (haftungsbeschränkt)
+ */
+/**
+ * Copyright (c) 2016 Max Mustermann Corporation
+ */
+echo "foo bar";
+?>
+`
+    const [status, output] = getUpdatedCopyrightHeader(input, php, {
+      ...options,
+      shouldUpdate: () => true
+    })
+
+    expect(status).toEqual(CopyrightHeaderStatus.Changed)
+    expect(output).toEqual(`<?php
+/**
+ * This file is part of @splish-me/copyright-headers
+ *
+ * Copyright (c) 2018 Splish UG (haftungsbeschränkt)
+ */
 /**
  * Copyright (c) 2016 Max Mustermann Corporation
  */
