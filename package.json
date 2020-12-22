@@ -15,6 +15,7 @@
     "_prettier": "prettier .",
     "prebuild": "rimraf dist",
     "build": "tsdx build --target node --format cjs --tsconfig tsconfig.prod.json",
+    "changelog": "ts-node --compiler-options '{\"module\": \"commonjs\"}' scripts/changelog",
     "format": "yarn _prettier --write",
     "license": "ts-node scripts/license-headers",
     "lint": "npm-run-all --parallel lint:prettier lint:tsc",
@@ -27,6 +28,7 @@
     "signale": "^1.0.0"
   },
   "devDependencies": {
+    "@inyono/changelog": "^0.2.0",
     "@types/glob": "^7.0.0",
     "@types/jest": "^26.0.0",
     "@types/node": "^14.0.0",
