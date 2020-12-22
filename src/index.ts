@@ -1,9 +1,9 @@
 /**
- * This file is part of @splish-me/copyright-headers.
+ * This file is part of @inyono/copyright-headers.
  *
- * @copyright Copyright (c) 2018 Splish UG (haftungsbeschränkt)
+ * @copyright Copyright (c) 2020 Jonas Keinholz
  * @license   https://opensource.org/licenses/MIT MIT License
- * @link      https://github.com/splish-me/copyright-headers for the canonical source repository
+ * @link      https://github.com/inyono/copyright-headers for the canonical source repository
  */
 import * as fs from 'fs'
 import * as R from 'ramda'
@@ -24,57 +24,47 @@ interface SourceLanguage {
 
 const cStyleComments: Pick<SourceLanguage, 'begin' | 'buildLine' | 'end'> = {
   begin: '/**',
-  buildLine: line => {
+  buildLine: (line) => {
     return ` *${line.length > 0 && !line.startsWith(' ') ? ' ' : ''}${line}`
   },
-  end: ' */'
+  end: ' */',
 }
 
 export const js: SourceLanguage = {
   match: /.jsx?$/,
-  ...cStyleComments
+  ...cStyleComments,
 }
 
 export const ts: SourceLanguage = {
   ...js,
-  match: /.tsx?$/
+  match: /.tsx?$/,
 }
 
 export const php: SourceLanguage = {
   match: /(\.php|\.php\.dist)$/,
   before: '<?php\n',
-  ...cStyleComments
+  ...cStyleComments,
 }
 
 export const phtml: SourceLanguage = {
   match: /\.phtml$/,
   before: '<?php\n',
   after: '\n?>',
-  ...cStyleComments
+  ...cStyleComments,
 }
 
 export const twig: SourceLanguage = {
   match: /\.twig$/,
   begin: '{##',
-  buildLine: line => {
+  buildLine: (line) => {
     return ` #${line.length > 0 && !line.startsWith(' ') ? ' ' : ''}${line}`
   },
-  end: ' #}'
+  end: ' #}',
 }
 
 export interface CopyrightHeaderOptions {
   lines: string[]
   shouldUpdate?: (header: string) => Boolean
-}
-
-export async function updateLicenseHeader({
-  filePath,
-  ...options
-}: {
-  filePath: string
-} & CopyrightHeaderOptions) {
-  signale.warn('Deprecated, use updateCopyrightHeader instead')
-  await updateCopyrightHeader(filePath, options)
 }
 
 export async function updateCopyrightHeader(
@@ -88,7 +78,7 @@ export async function updateCopyrightHeader(
     return
   }
 
-  const ioOptions = { encoding: 'utf-8' }
+  const ioOptions: { encoding: BufferEncoding } = { encoding: 'utf-8' }
   const oldContent = await readFile(filePath, ioOptions)
 
   const [status, newContent] = getUpdatedCopyrightHeader(
@@ -155,7 +145,7 @@ export function getUpdatedCopyrightHeader(
   ) {
     return [
       CopyrightHeaderStatus.Changed,
-      content.replace(existingCopyrightHeader, header)
+      content.replace(existingCopyrightHeader, header),
     ]
   }
 
@@ -166,13 +156,13 @@ export enum CopyrightHeaderStatus {
   Added,
   Changed,
   Unchanged,
-  External
+  External,
 }
 
 function getSourceLanguage(filePath: string) {
   const supportedLanguages = [js, ts, php, phtml, twig]
 
-  return supportedLanguages.find(lang => lang.match.test(filePath))
+  return supportedLanguages.find((lang) => lang.match.test(filePath))
 }
 
 function getLicenseHeader(language: SourceLanguage, lines: string[]) {
