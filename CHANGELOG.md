@@ -2,13 +2,25 @@
 
 All notable changes to this project will be documented in this file.
 
-## [0.0.2](https://github.com/inyono/copyright-headers/compare/0.0.1..0.0.2) - November 18, 2018
+## [v0.1.0](https://github.com/inyono/copyright-headers/compare/v0.0.2..v0.1.0)
+
+### Breaking Changes
+
+- Remove deprecated `updateLicenseHeader`.
+
+- Drop Node v10 support.
+
+### Added
+
+- Update dependencies to support Node v14.
+
+## [v0.0.2](https://github.com/inyono/copyright-headers/compare/v0.0.1..v0.0.2) - November 18, 2018
 
 ### Fixed
 
 - Handle multiple multiline comments without newline in between correctly
 
-## [0.0.1](https://github.com/inyono/copyright-headers/compare/0.0.0..0.0.1) - November 8, 2018
+## [v0.0.1](https://github.com/inyono/copyright-headers/compare/v0.0.0..v0.0.1) - November 8, 2018
 
 ### Added
 
@@ -26,7 +38,7 @@ All notable changes to this project will be documented in this file.
 
 - Add tests.
 
-## [0.0.0](https://github.com/inyono/copyright-headers/compare/df12fe2868efc66641034590c3ffd37e0896afbb..0.0.0) - November 8, 2018
+## [v0.0.0](https://github.com/inyono/copyright-headers/compare/df12fe2868efc66641034590c3ffd37e0896afbb..v0.0.0) - November 8, 2018
 
 ### Added
 
