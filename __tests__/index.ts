@@ -3,7 +3,7 @@ import {
   CopyrightHeaderStatus,
   getUpdatedCopyrightHeader,
   php,
-  phtml
+  phtml,
 } from '../src'
 
 describe('php', () => {
@@ -11,8 +11,8 @@ describe('php', () => {
     lines: [
       'This file is part of @splish-me/copyright-headers',
       '',
-      'Copyright (c) 2018 Splish UG (haftungsbeschränkt)'
-    ]
+      'Copyright (c) 2018 Splish UG (haftungsbeschränkt)',
+    ],
   }
 
   test('does not start with <?php', () => {
@@ -76,7 +76,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, php, {
       ...options,
-      shouldUpdate: () => true
+      shouldUpdate: () => true,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.Changed)
@@ -99,7 +99,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, php, {
       ...options,
-      shouldUpdate: () => false
+      shouldUpdate: () => false,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.External)
@@ -121,7 +121,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, php, {
       ...options,
-      shouldUpdate: () => true
+      shouldUpdate: () => true,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.Changed)
@@ -153,7 +153,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, php, {
       ...options,
-      shouldUpdate: () => true
+      shouldUpdate: () => true,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.Changed)
@@ -176,8 +176,8 @@ describe('phtml', () => {
     lines: [
       'This file is part of @splish-me/copyright-headers',
       '',
-      'Copyright (c) 2018 Splish UG (haftungsbeschränkt)'
-    ]
+      'Copyright (c) 2018 Splish UG (haftungsbeschränkt)',
+    ],
   }
 
   test('does not start with <?php', () => {
@@ -224,7 +224,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, phtml, {
       ...options,
-      shouldUpdate: () => true
+      shouldUpdate: () => true,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.Changed)
@@ -249,7 +249,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, phtml, {
       ...options,
-      shouldUpdate: () => false
+      shouldUpdate: () => false,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.External)
@@ -272,7 +272,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, php, {
       ...options,
-      shouldUpdate: () => true
+      shouldUpdate: () => true,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.Changed)
@@ -306,7 +306,7 @@ echo "foo bar";
 `
     const [status, output] = getUpdatedCopyrightHeader(input, php, {
       ...options,
-      shouldUpdate: () => true
+      shouldUpdate: () => true,
     })
 
     expect(status).toEqual(CopyrightHeaderStatus.Changed)
