@@ -12,31 +12,41 @@ exec().then(() => {
 async function exec(): Promise<void> {
   const content = await generateChangelog<undefined>([
     {
-      tagName: '0.0.0',
-      date: '2018-11-08',
-      added: ['Add initial `updateLicenseHeader` function supporting JavaScript, TypeScript, PHP, PHTML and Twig.']
-    },
-    {
-      tagName: '0.0.1',
+      tagName: 'v0.0.0',
       date: '2018-11-08',
       added: [
-          'Add function `updateCopyrightHeader` with slightly different API as a replacement for `updateLicenseHeader`.'
+        'Add initial `updateLicenseHeader` function supporting JavaScript, TypeScript, PHP, PHTML and Twig.',
       ],
-      internal: [
-          'Add tests.'
-      ],
-      deprecated: [
-          '`updateLicenseHeader` will be removed with the next breaking change. Use the new `updateCopyrightHeader` instead.'
-      ],
-      fixed: [
-          'Handle `language.after` (e.g. `?>` for PHTML) correctly when input already starts with `language.begin` (e.g. `<?php`)'
-      ]
     },
     {
-      tagName: '0.0.2',
+      tagName: 'v0.0.1',
+      date: '2018-11-08',
+      deprecated: [
+        '`updateLicenseHeader` will be removed with the next breaking change. Use the new `updateCopyrightHeader` instead.',
+      ],
+      added: [
+        'Add function `updateCopyrightHeader` with slightly different API as a replacement for `updateLicenseHeader`.',
+      ],
+      fixed: [
+        'Handle `language.after` (e.g. `?>` for PHTML) correctly when input already starts with `language.begin` (e.g. `<?php`)',
+      ],
+      internal: ['Add tests.'],
+    },
+    {
+      tagName: 'v0.0.2',
       date: '2018-11-18',
-      fixed: ['Handle multiple multiline comments without newline in between correctly']
-    }
+      fixed: [
+        'Handle multiple multiline comments without newline in between correctly',
+      ],
+    },
+    {
+      tagName: 'v0.1.0',
+      breakingChanges: [
+        'Remove deprecated `updateLicenseHeader`.',
+        'Drop Node v10 support.',
+      ],
+      added: ['Update dependencies to support Node v14.'],
+    },
   ])
 
   await writeFile(path.join(__dirname, '..', 'CHANGELOG.md'), content)

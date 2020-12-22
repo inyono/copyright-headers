@@ -67,16 +67,6 @@ export interface CopyrightHeaderOptions {
   shouldUpdate?: (header: string) => Boolean
 }
 
-export async function updateLicenseHeader({
-  filePath,
-  ...options
-}: {
-  filePath: string
-} & CopyrightHeaderOptions) {
-  signale.warn('Deprecated, use updateCopyrightHeader instead')
-  await updateCopyrightHeader(filePath, options)
-}
-
 export async function updateCopyrightHeader(
   filePath: string,
   options: CopyrightHeaderOptions
