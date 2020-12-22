@@ -20,20 +20,20 @@ const lines = [
   '',
   `@copyright Copyright (c) 2018 Splish UG (haftungsbeschränkt)`,
   '@license   https://opensource.org/licenses/MIT MIT License',
-  '@link      https://github.com/splish-me/copyright-headers for the canonical source repository'
+  '@link      https://github.com/splish-me/copyright-headers for the canonical source repository',
 ]
 
 g('@(scripts|src)/*.ts', {
-  cwd: root
-}).then(files => {
-  return files.map(file => {
+  cwd: root,
+}).then((files) => {
+  return files.map((file) => {
     const filePath = path.join(root, file)
 
     return updateCopyrightHeader(filePath, {
       lines,
-      shouldUpdate: content => {
+      shouldUpdate: (content) => {
         return content.includes('Splish UG')
-      }
+      },
     })
   })
 })

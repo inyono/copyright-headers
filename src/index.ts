@@ -24,42 +24,42 @@ interface SourceLanguage {
 
 const cStyleComments: Pick<SourceLanguage, 'begin' | 'buildLine' | 'end'> = {
   begin: '/**',
-  buildLine: line => {
+  buildLine: (line) => {
     return ` *${line.length > 0 && !line.startsWith(' ') ? ' ' : ''}${line}`
   },
-  end: ' */'
+  end: ' */',
 }
 
 export const js: SourceLanguage = {
   match: /.jsx?$/,
-  ...cStyleComments
+  ...cStyleComments,
 }
 
 export const ts: SourceLanguage = {
   ...js,
-  match: /.tsx?$/
+  match: /.tsx?$/,
 }
 
 export const php: SourceLanguage = {
   match: /(\.php|\.php\.dist)$/,
   before: '<?php\n',
-  ...cStyleComments
+  ...cStyleComments,
 }
 
 export const phtml: SourceLanguage = {
   match: /\.phtml$/,
   before: '<?php\n',
   after: '\n?>',
-  ...cStyleComments
+  ...cStyleComments,
 }
 
 export const twig: SourceLanguage = {
   match: /\.twig$/,
   begin: '{##',
-  buildLine: line => {
+  buildLine: (line) => {
     return ` #${line.length > 0 && !line.startsWith(' ') ? ' ' : ''}${line}`
   },
-  end: ' #}'
+  end: ' #}',
 }
 
 export interface CopyrightHeaderOptions {
@@ -155,7 +155,7 @@ export function getUpdatedCopyrightHeader(
   ) {
     return [
       CopyrightHeaderStatus.Changed,
-      content.replace(existingCopyrightHeader, header)
+      content.replace(existingCopyrightHeader, header),
     ]
   }
 
@@ -166,13 +166,13 @@ export enum CopyrightHeaderStatus {
   Added,
   Changed,
   Unchanged,
-  External
+  External,
 }
 
 function getSourceLanguage(filePath: string) {
   const supportedLanguages = [js, ts, php, phtml, twig]
 
-  return supportedLanguages.find(lang => lang.match.test(filePath))
+  return supportedLanguages.find((lang) => lang.match.test(filePath))
 }
 
 function getLicenseHeader(language: SourceLanguage, lines: string[]) {
