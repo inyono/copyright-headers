@@ -1,9 +1,9 @@
 /**
- * This file is part of @splish-me/copyright-headers.
+ * This file is part of @inyono/copyright-headers.
  *
- * @copyright Copyright (c) 2018 Splish UG (haftungsbeschränkt)
+ * @copyright Copyright (c) 2020 Jonas Keinholz
  * @license   https://opensource.org/licenses/MIT MIT License
- * @link      https://github.com/splish-me/copyright-headers for the canonical source repository
+ * @link      https://github.com/inyono/copyright-headers for the canonical source repository
  */
 import * as fs from 'fs'
 import * as R from 'ramda'
@@ -88,7 +88,7 @@ export async function updateCopyrightHeader(
     return
   }
 
-  const ioOptions = { encoding: 'utf-8' }
+  const ioOptions: { encoding: BufferEncoding } = { encoding: 'utf-8' }
   const oldContent = await readFile(filePath, ioOptions)
 
   const [status, newContent] = getUpdatedCopyrightHeader(
