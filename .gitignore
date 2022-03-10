@@ -57,8 +57,14 @@ typings/
 # dotenv environment variables file
 .env
 
-# next.js build output
-.next
+# build output
+dist
 
-# Compiled code
-dist/
+# Yarn
+.yarn/*
+!.yarn/cache
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions

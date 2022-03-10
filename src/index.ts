@@ -1,14 +1,14 @@
 /**
  * This file is part of @inyono/copyright-headers.
  *
- * @copyright Copyright (c) 2020 Jonas Keinholz
+ * @copyright Copyright (c) 2020-2022 Jonas Keinholz
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/inyono/copyright-headers for the canonical source repository
  */
-import * as fs from 'fs'
+import * as fs from 'node:fs'
+import * as util from 'node:util'
 import * as R from 'ramda'
-import * as signale from 'signale'
-import * as util from 'util'
+import signale from 'signale'
 
 const readFile = util.promisify(fs.readFile)
 const writeFile = util.promisify(fs.writeFile)

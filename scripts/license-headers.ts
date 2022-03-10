@@ -1,24 +1,26 @@
 /**
  * This file is part of @inyono/copyright-headers.
  *
- * @copyright Copyright (c) 2020 Jonas Keinholz
+ * @copyright Copyright (c) 2020-2022 Jonas Keinholz
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/inyono/copyright-headers for the canonical source repository
  */
 import glob from 'glob'
-import path from 'path'
-import util from 'util'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import util from 'node:util'
 
 import { updateCopyrightHeader } from '../src'
 
 const g = util.promisify(glob)
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const root = path.join(__dirname, '..')
 
 const lines = [
   'This file is part of @inyono/copyright-headers.',
   '',
-  `@copyright Copyright (c) 2020 Jonas Keinholz`,
+  `@copyright Copyright (c) 2020-2022 Jonas Keinholz`,
   '@license   https://opensource.org/licenses/MIT MIT License',
   '@link      https://github.com/inyono/copyright-headers for the canonical source repository',
 ]
