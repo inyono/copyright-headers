@@ -1,7 +1,7 @@
 /**
  * This file is part of @inyono/copyright-headers.
  *
- * @copyright Copyright (c) 2020-2022 Jonas Keinholz
+ * @copyright Copyright (c) 2018-2022 Jonas Keinholz
  * @license   https://opensource.org/licenses/MIT MIT License
  * @link      https://github.com/inyono/copyright-headers for the canonical source repository
  */
