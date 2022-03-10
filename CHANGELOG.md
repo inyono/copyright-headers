@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v0.2.0](https://github.com/inyono/copyright-headers/compare/v0.1.0..v0.2.0)
+
+### Breaking Changes
+
+- This package is now ESM only. [Learn more about ESM in this guide](https://gist.github.com/sindresorhus/a39789f98801d908bbc7ff3ecc99d99c).
+
+- Drop Node v12 support.
+
 ## [v0.1.0](https://github.com/inyono/copyright-headers/compare/v0.0.2..v0.1.0)
 
 ### Breaking Changes
